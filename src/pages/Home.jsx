@@ -42,7 +42,7 @@ const Home = () => {
         }
 
         console.log("Data before sending to backend",formData);
-      const response = await axios.post("http://localhost:8000/compute_similarity/", formData, {
+      const response = await axios.post("https://elopyx-zensortai-backend.hf.space/compute_similarity/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
