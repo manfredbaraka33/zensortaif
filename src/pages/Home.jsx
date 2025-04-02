@@ -142,8 +142,8 @@ const downloadPDF = () => {
     <div className='conatiner-fluid p-3'>
         <div className="row">
             <center>
-              <h3 classname="text-warning">AI-Powered Resume Similarity Checker</h3>
-               <p classname="text-light">>Quickly analyze CVs for job compatibility</p>
+              <h3 className="text-warning">AI-Powered Resume Similarity Checker</h3>
+               <p className="text-light">Quickly analyze CVs for job compatibility</p>
 
             <div className="col-10">
             <textarea
