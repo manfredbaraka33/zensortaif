@@ -1,0 +1,21 @@
+.logo{
+  color:#00FF85;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.logo img{
+  width:60px;
+  height: 60px;
+}
+
+ul{
+  list-style: none;
+}
+
+.table-responsive {
+  max-height: 500px;
+  border-radius: 10px;
+  border: 2px solid #ffff;
+}
+
