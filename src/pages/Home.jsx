@@ -214,7 +214,13 @@ const downloadPDF = () => {
             </div>
       
         </div>
-        {/* Error Message */}
+       
+        </center>
+    </div>
+      <center>
+       <div className="row">
+           <div class="col-10">
+              {/* Error Message */}
             {errorMsg && <p style={styles.errorText}>{errorMsg}</p>}
 
             {/* Display Selected Files */}
@@ -230,8 +236,9 @@ const downloadPDF = () => {
                 ))}
               </ul>
             )}
-        </center>
-    </div>
+           </div>
+       </div>
+      </center>
     <center>
           
             {loading ? ( <button className="btn btn-primary" disabled={loading}>
