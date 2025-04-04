@@ -61,9 +61,7 @@ const Home = () => {
       const response = await axios.post("https://elopyx-zensortai-backend.hf.space/compute_similarity/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-        },
-        
-        timeout: 10000, 
+        } 
       });
       // Sorting results in descending order based on similarity_score
     const sortedResults = response.data.results.sort((a, b) => b.similarity_score - a.similarity_score);
