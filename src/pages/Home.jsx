@@ -212,6 +212,7 @@ const downloadPDF = () => {
             <div {...getRootProps()} style={styles.dropzone}>
                 <input {...getInputProps()} required />
                <p>Drag & Drop files here, or click to select files</p>
+              <p className="text-danger">Only PDF and DOCX formats are acceptable</p>
             </div>
       
         </div>
