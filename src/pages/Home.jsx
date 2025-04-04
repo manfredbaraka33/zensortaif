@@ -3,7 +3,7 @@ import axios from "axios";
 import {useDropzone} from "react-dropzone"
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { FaFilePdf, FaFileCsv, FaDownload } from "react-icons/fa";
+import { FaFilePdf, FaFileCsv, FaDownload,FaTimes } from "react-icons/fa";
 
 
 const Home = () => {
@@ -12,16 +12,32 @@ const Home = () => {
   const [files, setFiles] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-   // React Dropzone configuration
-   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: (acceptedFiles) => {
-      setFiles(acceptedFiles); // Set files on drop
+    // Allowed file types
+  const acceptedFileTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+
+
+     const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles, rejectedFiles) => {
+      const validFiles = acceptedFiles.filter(file => acceptedFileTypes.includes(file.type));
+      const invalidFiles = acceptedFiles.filter(file => !acceptedFileTypes.includes(file.type));
+
+      if (invalidFiles.length > 0) {
+        setErrorMsg("Only PDF and DOCX files are allowed!");
+        setTimeout(() => setErrorMsg(""), 3000); // Clear error after 3 seconds
+      }
+
+      setFiles([...files, ...validFiles]); // Add only valid files
     },
-    accept: ".pdf, .docx", // Allow only PDF and DOCX files
+    accept: acceptedFileTypes.join(","), // Allow only PDF and DOCX
   });
 
- 
+
+  const removeFile = (index) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
+
 
   const handleJobDescChange = (e) => {
     setJobDesc(e.target.value);
@@ -46,6 +62,8 @@ const Home = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        
+        timeout: 10000, 
       });
       // Sorting results in descending order based on similarity_score
     const sortedResults = response.data.results.sort((a, b) => b.similarity_score - a.similarity_score);
@@ -53,14 +71,14 @@ const Home = () => {
       setResults(sortedResults);
     } catch (error) {
       console.error(error);
-      
+      setErrorMsg("Request failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
 
-  const styles = {
+ const styles = {
     dropzone: {
       border: "2px dashed #cccccc",
       padding: "20px",
@@ -69,8 +87,35 @@ const Home = () => {
       borderRadius: "5px",
       cursor: "pointer",
       backgroundColor: "#0D0D0D",
-      color:"#ffffff"
-    }
+      color: "#ffffff",
+    },
+    errorText: {
+      color: "red",
+      fontSize: "14px",
+      marginTop: "10px",
+    },
+    fileList: {
+      listStyle: "none",
+      padding: 0,
+      color: "#fff",
+      textAlign: "left",
+    },
+    fileItem: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      background: "#333",
+      padding: "8px",
+      borderRadius: "5px",
+      marginBottom: "5px",
+    },
+    removeBtn: {
+      background: "transparent",
+      border: "none",
+      color: "red",
+      cursor: "pointer",
+      fontSize: "18px",
+    },
   };
 
   const downloadCSV = () => {
@@ -170,16 +215,21 @@ const downloadPDF = () => {
             </div>
       
         </div>
-        {/* Display selected file names */}
-        {files.length > 0 && (
-              <div style={{ marginTop: "10px", color: "#fff" }}>
-                <h5>Selected Files:</h5>
-                <ul>
-                  {files.map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
-                </ul>
-              </div>
+        {/* Error Message */}
+            {errorMsg && <p style={styles.errorText}>{errorMsg}</p>}
+
+            {/* Display Selected Files */}
+            {files.length > 0 && (
+              <ul style={styles.fileList}>
+                {files.map((file, index) => (
+                  <li key={index} style={styles.fileItem}>
+                    {file.name}
+                    <button style={styles.removeBtn} onClick={() => removeFile(index)}>
+                      <FaTimes />
+                    </button>
+                  </li>
+                ))}
+              </ul>
             )}
         </center>
     </div>
