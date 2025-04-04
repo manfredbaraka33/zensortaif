@@ -219,6 +219,7 @@ const downloadPDF = () => {
     </div>
       <center>
        <div className="row">
+         <center>
            <div class="col-10">
               {/* Error Message */}
             {errorMsg && <p style={styles.errorText}>{errorMsg}</p>}
@@ -237,6 +238,7 @@ const downloadPDF = () => {
               </ul>
             )}
            </div>
+           </center>
        </div>
       </center>
     <center>
